@@ -1,6 +1,6 @@
-import {get, init} from "./lib/environment";
+import {getEnvProperty, initEnv} from "./lib/environment";
 
 module.exports = {
-  get  : get,
-  init : init
+  getEnvProperty  : getEnvProperty,
+  initEnv : initEnv
 };
