@@ -1,6 +1,6 @@
-import {getEnvProperty, initEnv} from "./lib/environment";
+const Environment = require("./lib/environment");
 
 module.exports = {
-  getEnvProperty  : getEnvProperty,
-  initEnv : initEnv
+  getEnvProperty  : Environemnt.getEnvProperty,
+  initEnv         : Environemnt.initEnv
 };
