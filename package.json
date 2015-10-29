@@ -1,11 +1,25 @@
 {
+  "author": {
+    "name": "Alvaro Juste <juste.alvaro@gmail.com>"
+  },
   "name": "jaune-env",
   "version": "1.0.0",
-  "description": "Environment package for Jaune",
+  "description": "Singleton environment information / configuration",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "ajuste juste.alvaro@gmail.com",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "ajuste/jaune-env.git"
+  },
+  "_id": "jaune-util@1.0.0",
+  "directories": {
+    "directories.lib": "lib"
+  },
+  "engine": "node >= 4.0.0",
+  "scripts": {
+    "test": "mocha ./test/*"
+  }
 }
