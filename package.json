@@ -1,9 +1,7 @@
 {
-  "author": {
-    "name": "Alvaro Juste <juste.alvaro@gmail.com>"
-  },
+  "author": "Alvaro Juste <juste.alvaro@gmail.com>",
   "name": "jaune-env",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Singleton environment information / configuration",
   "main": "index.js",
   "scripts": {
@@ -12,14 +10,21 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "ajuste/jaune-env.git"
+    "url": "git+https://github.com/ajuste/jaune-env.git"
   },
-  "_id": "jaune-util@1.0.0",
   "directories": {
-    "directories.lib": "lib"
+    "test": "test"
   },
   "engine": "node >= 0.10.0",
   "devDependencies": {
     "assert": "^1.3.0"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/ajuste/jaune-env/issues"
+  },
+  "homepage": "https://github.com/ajuste/jaune-env#readme",
+  "keywords": [
+    "environment",
+    "settings"
+  ]
 }
