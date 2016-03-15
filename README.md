@@ -59,7 +59,7 @@ env.setProcessProperty('type', 'development');
 After that all properties look up will be performed first on {property}Develop and if not found; we fallback to {property}:
 
 ```js
-env.getEnvProperty('api.host'); // http://test-api-dev/v1
+env.getEnvProperty('api'); // --> object from apiDevelop
 
 env.getEnvProperty('foo'); // true
 ```
