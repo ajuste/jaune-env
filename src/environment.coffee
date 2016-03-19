@@ -46,10 +46,16 @@ class Environment
 
     index = 0
     sections = section.split('.')
-    length = sections.length
+    {length} = sections
 
-    data = (data ? @config)[sections[index++]] while index < length and data? or index is 0
-    data = data["#{property}#{this.envPost}"] ? data[property] if arguments.length >= 2 and data?
+
+    while index < length and data? or index is 0
+      current = data ? @config
+      section = sections[index++]
+      data = current["#{section}#{@envPost}"] ? current[section]
+
+    data = data["#{property}#{@envPost}"] ? data[property] if arguments.length >= 2 and data?
+    console.log('envPost', "#{property}#{@envPost}")
 
     data
 
@@ -78,8 +84,7 @@ class Environment
   determineEnv : () ->
     return if 'string' is typeof this.isDevelop
 
-    @envType = @getProcessProperty(ENV_TYPE) is ENV_TYPE_DEV ? ENV_TYPE_DEV : ENV_TYPE_PROD
-    @envPost = @getProcessProperty(ENV_TYPE) is ENV_TYPE_DEV ? CONFIG_DEV_POST : ""
-
+    @envType = if @getProcessProperty(ENV_TYPE) is ENV_TYPE_DEV then ENV_TYPE_DEV else ENV_TYPE_PROD
+    @envPost = if @getProcessProperty(ENV_TYPE) is ENV_TYPE_DEV then CONFIG_DEV_POST else ""
 
 module.exports = Environment;
