@@ -75,7 +75,7 @@ class Environment
   ###*
   * @function Determines environment
   ###
-  determineEnv = () ->
+  determineEnv : () ->
     return if 'string' is typeof this.isDevelop
 
     @envType = @getProcessProperty(ENV_TYPE) is ENV_TYPE_DEV ? ENV_TYPE_DEV : ENV_TYPE_PROD
