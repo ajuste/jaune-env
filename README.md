@@ -1,6 +1,14 @@
+[![Build Status](https://travis-ci.org/ajuste/jaune-env.svg?branch=master)](https://travis-ci.org/ajuste/koa-track)
+
 # jaune-env package
 
 Simple JS utility that allows to get properties from an object by section or path. Plus it can pull from different sections if environment is production or testing.
+
+## Install
+
+```sh
+npm install jaune-env
+```
 
 ## How to use
 
