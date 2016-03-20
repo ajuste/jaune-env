@@ -10,6 +10,13 @@ Simple JS utility that allows to get properties from an object by section or pat
 npm install jaune-env
 ```
 
+## Run tests
+
+```sh
+npm test
+```
+
+
 ## How to use
 
 ```js
