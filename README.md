@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/ajuste/jaune-env.svg?branch=master)](https://travis-ci.org/ajuste/koa-track)
+[![Build Status](https://travis-ci.org/ajuste/jaune-env.svg?branch=master)](https://travis-ci.org/ajuste/jaune-env)
 
 # jaune-env package
 
