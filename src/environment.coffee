@@ -7,22 +7,17 @@
 ###*
 * @constant Process property name for environment type
 ###
-ENV_TYPE               = "type";
+ENV_TYPE = "env"
 
 ###*
 * @constant Development process type name
 ###
-ENV_TYPE_DEV           = "development";
+ENV_TYPE_DEV = "dev"
 
 ###*
 * @constant production process type name
 ###
-ENV_TYPE_PROD          = "production";
-
-###*
-* @constant Postfix for connections name in develop mode.
-###
-CONFIG_DEV_POST        = "Develop";
+ENV_TYPE_PROD = "prod"
 
 class Environment
 
@@ -30,7 +25,8 @@ class Environment
 
   ###*
   * @function Gets section or key within a section. Tries to get
-  *           _config based on environtment or generic.
+  *           _config based on environtment or generic. But first tries to
+  *           get it from environment variable.
   * @param    {String} section The section name
   * @param    {String} [property] The property name
   * @returns  {*}      Data or undefined
@@ -38,9 +34,15 @@ class Environment
   getEnvProperty: ->
 
     [section, property] = arguments
-    data = null;
+    data = null
 
-    return unless @config and section
+    return unless section
+
+    return proc if (proc = @getProcessProperty(
+      "#{section}#{if property? then '.' + property else ''}"))?
+
+
+    return unless @config
 
     @determineEnv()
 
@@ -48,14 +50,13 @@ class Environment
     sections = section.split('.')
     {length} = sections
 
-
     while index < length and data? or index is 0
       current = data ? @config
       section = sections[index++]
       data = current["#{section}#{@envPost}"] ? current[section]
 
-    data = data["#{property}#{@envPost}"] ? data[property] if arguments.length >= 2 and data?
-    console.log('envPost', "#{property}#{@envPost}")
+    if arguments.length >= 2 and data?
+      data = data["#{property}#{@envPost}"] ? data[property]
 
     data
 
@@ -63,11 +64,14 @@ class Environment
   * @function Sets process property
   * @param    {String} key The key
   * @param    {String} value The value
+  * @returns  {Object} Self
   ###
   setProcessProperty : (key, value) ->
     throw new Error 'key must be a string' if 'string' isnt typeof key
     throw new Error 'value must be a string' if 'string' isnt typeof value
     (process.jaune ? (process.jaune = {}))[key] = value
+
+    return this
 
   ###*
   * @function Gets process property
@@ -76,15 +80,21 @@ class Environment
   ###
   getProcessProperty : (key, def) ->
     throw new Error 'key must be a string' if 'string' isnt typeof key
+    return val if (val = process.env[key])?
     (process.jaune ? (process.jaune = {}))[key] ? def
 
   ###*
   * @function Determines environment
+  * @returns  {Object} Returns self reference
   ###
   determineEnv : () ->
     return if 'string' is typeof this.isDevelop
 
-    @envType = if @getProcessProperty(ENV_TYPE) is ENV_TYPE_DEV then ENV_TYPE_DEV else ENV_TYPE_PROD
-    @envPost = if @getProcessProperty(ENV_TYPE) is ENV_TYPE_DEV then CONFIG_DEV_POST else ""
+    @envType = @getProcessProperty(ENV_TYPE)
 
-module.exports = Environment;
+    @envType = ENV_TYPE_DEV if not @envType
+    @envPost = unless @envType is ENV_TYPE_PROD then "-#{@envType}" else ''
+
+    this
+
+module.exports = Environment

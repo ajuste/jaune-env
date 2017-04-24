@@ -58,7 +58,7 @@ var config = {
     port : 80
   },
   foo: true,
-  apiDevelop : {
+  api-dev : {
     host : 'http://test-api-dev/v1',
     port : 8080
   }
@@ -68,7 +68,7 @@ var config = {
 Let`s tell jaune-env we are running under development
 
 ```js
-env.setProcessProperty('type', 'development');
+env.setProcessProperty('env', 'dev');
 ```
 
 After that all properties look up will be performed first on {property}Develop and if not found; we fallback to {property}:
@@ -78,3 +78,8 @@ env.getEnvProperty('api'); // --> object from apiDevelop
 
 env.getEnvProperty('foo'); // true
 ```
+
+## Getting information from env variables
+Both getEnvProperty and getProcessProperty will first check for the property to exist in an environment variable.
+
+For getEnvProperty it will concat section and property with a dot in the middle if both are specified.
