@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/ajuste/jaune-env.svg?branch=master)](https://travis-ci.org/ajuste/jaune-env)
+[![Coverage Status](https://coveralls.io/repos/ajuste/jaune-env/badge.svg?branch=master)](https://coveralls.io/r/ajuste/jaune-env?branch=master)
 
 # jaune-env package
 
