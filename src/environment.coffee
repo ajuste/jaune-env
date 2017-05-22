@@ -19,9 +19,13 @@ ENV_TYPE_DEV = "dev"
 ###
 ENV_TYPE_PROD = "prod"
 
+MatchNonWord = /\W/g
+
 class Environment
 
   constructor: (@config) ->
+
+  transformKey: (key) -> key.replace MatchNonWord, '_'
 
   ###*
   * @function Gets section or key within a section. Tries to get
@@ -80,6 +84,7 @@ class Environment
   ###
   getProcessProperty : (key, def) ->
     throw new Error 'key must be a string' if 'string' isnt typeof key
+    return val if (val = process.env[@transformKey key])?
     return val if (val = process.env[key])?
     (process.jaune ? (process.jaune = {}))[key] ? def
 

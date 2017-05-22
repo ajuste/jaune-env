@@ -31,7 +31,9 @@ describe 'environment', ->
   describe 'getEnvProperty on development', ->
     before ->
       process.jaune = env: 'dev'
-      process.env['section2.foo'] = 2
+      process.env['section2_foo'] = 2
+      process.env['section3_foo'] = 3
+      process.env['section4______foo'] = 4
       _env = new lib
         section1:
           foo: no
@@ -63,8 +65,14 @@ describe 'environment', ->
     it 'gets value when section has only 2 steps with develop on last step', ->
       equal yes, _env.getEnvProperty 'section1.section13', 'foo'
 
-    it 'gets value from env variables rather than config', ->
+    it 'gets value from env variables rather than config with dot replaced', ->
       equal 2, _env.getEnvProperty 'section2.foo'
+
+    it 'gets value from env variables rather than config with dot', ->
+      equal 3, _env.getEnvProperty 'section3_foo'
+
+    it 'gets value from env variables rather than config with dot', ->
+      equal 4, _env.getEnvProperty 'section4 #-_{!foo'
 
     it 'gets value from env variables rather than config using two steps', ->
       equal 2, _env.getEnvProperty 'section2', 'foo'
