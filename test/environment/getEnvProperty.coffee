@@ -1,14 +1,15 @@
 lib = require '../../'
 {
   equal
+  deepEqual
 } = require 'assert'
 
-_env = null
+env = null
 
 describe 'environment', ->
   describe 'initEnv', ->
     it 'sets configuration', ->
-      _env = new lib
+      env = new lib
         section1:
           section11:
             data: 'hi'
@@ -17,16 +18,16 @@ describe 'environment', ->
 
   describe 'getEnvProperty', ->
     it 'gets undefined for non existing property', ->
-      equal undefined, _env.getEnvProperty 'prop'
+      equal env.getEnvProperty('prop'), undefined
 
     it 'gets undefined for non existing property in section', ->
-      equal undefined, _env.getEnvProperty 'section2', 'prop'
+      equal env.getEnvProperty('section2', 'prop'), undefined
 
     it 'gets undefined for non existing property in nested section', ->
-      equal undefined, _env.getEnvProperty 'section1.section2', 'prop'
+      equal env.getEnvProperty('section1.section2', 'prop'), undefined
 
     it 'gets correct value for nested and existing', ->
-      equal 'hi', _env.getEnvProperty 'section1.section11', 'data'
+      equal env.getEnvProperty('section1.section11', 'data'), 'hi'
 
   describe 'getEnvProperty on development', ->
     before ->
@@ -34,7 +35,8 @@ describe 'environment', ->
       process.env['section2_foo'] = 2
       process.env['section3_foo'] = 3
       process.env['section4______foo'] = 4
-      _env = new lib
+      process.env['section5_foo'] = JSON.stringify a: 1, b: [3], c: d: e: f: 'a'
+      env = new lib
         section1:
           foo: no
         'section1-dev':
@@ -54,25 +56,29 @@ describe 'environment', ->
       process.jaune = {}
 
     it 'gets value when section has only 1 step', ->
-      equal yes, _env.getEnvProperty 'section1', 'foo'
+      equal env.getEnvProperty('section1', 'foo'), yes
 
     it 'gets value when section has only 2 steps', ->
-      equal yes, _env.getEnvProperty 'section1.section11', 'foo'
+      equal env.getEnvProperty('section1.section11', 'foo'), yes
 
     it 'gets value when section has only 2 steps no develop on last step', ->
-      equal no, _env.getEnvProperty 'section1.section12', 'foo'
+      equal env.getEnvProperty('section1.section12', 'foo'), no
 
     it 'gets value when section has only 2 steps with develop on last step', ->
-      equal yes, _env.getEnvProperty 'section1.section13', 'foo'
+      equal env.getEnvProperty('section1.section13', 'foo'), yes
 
     it 'gets value from env variables rather than config with dot replaced', ->
-      equal 2, _env.getEnvProperty 'section2.foo'
+      equal env.getEnvProperty('section2.foo'), 2
 
     it 'gets value from env variables rather than config with dot', ->
-      equal 3, _env.getEnvProperty 'section3_foo'
+      equal env.getEnvProperty('section3_foo'), 3
 
     it 'gets value from env variables rather than config with dot', ->
-      equal 4, _env.getEnvProperty 'section4 #-_{!foo'
+      equal env.getEnvProperty('section4 #-_{!foo'), 4
+
+    it 'gets value from env variables which is a json', ->
+      deepEqual env.getEnvProperty('section5_foo'),
+        a: 1, b: [3], c: d: e: f: 'a'
 
     it 'gets value from env variables rather than config using two steps', ->
-      equal 2, _env.getEnvProperty 'section2', 'foo'
+      equal env.getEnvProperty('section2', 'foo'), 2

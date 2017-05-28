@@ -72,7 +72,8 @@ Let`s tell jaune-env we are running under development
 env.setProcessProperty('env', 'dev');
 ```
 
-After that all properties look up will be performed first on {property}Develop and if not found; we fallback to {property}:
+After that all properties look up will be performed first on {property}-dev
+and if not found; we fallback to {property}:
 
 ```js
 env.getEnvProperty('api'); // --> object from apiDevelop
@@ -81,6 +82,10 @@ env.getEnvProperty('foo'); // true
 ```
 
 ## Getting information from env variables
-Both getEnvProperty and getProcessProperty will first check for the property to exist in an environment variable.
+Both getEnvProperty and getProcessProperty will first check for the property
+to exist in an environment variable.
 
-For getEnvProperty it will concat section and property with a dot in the middle if both are specified.
+For getEnvProperty it will concat section and property with a dot in the
+middle if both are specified.
+
+Also getEnvProperty will convert to object if value is a valid JSON.

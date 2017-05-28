@@ -27,6 +27,12 @@ class Environment
 
   transformKey: (key) -> key.replace MatchNonWord, '_'
 
+  parseValue: (value) ->
+    try
+      JSON.parse value
+    catch
+      value
+
   ###*
   * @function Gets section or key within a section. Tries to get
   *           _config based on environtment or generic. But first tries to
@@ -45,7 +51,6 @@ class Environment
     return proc if (proc = @getProcessProperty(
       "#{section}#{if property? then '.' + property else ''}"))?
 
-
     return unless @config
 
     @determineEnv()
@@ -62,7 +67,7 @@ class Environment
     if arguments.length >= 2 and data?
       data = data["#{property}#{@envPost}"] ? data[property]
 
-    data
+    @parseValue data
 
   ###*
   * @function Sets process property
@@ -84,9 +89,11 @@ class Environment
   ###
   getProcessProperty : (key, def) ->
     throw new Error 'key must be a string' if 'string' isnt typeof key
-    return val if (val = process.env[@transformKey key])?
-    return val if (val = process.env[key])?
-    (process.jaune ? (process.jaune = {}))[key] ? def
+
+    @parseValue (
+      process.env[@transformKey key] ? process.env[key] ? (process.jaune ?
+      (process.jaune = {}))[key] ? def
+    )
 
   ###*
   * @function Determines environment
