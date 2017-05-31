@@ -3,6 +3,14 @@
 * @author Alvaro Juste
 ###
 "use strict"
+{
+  join
+} = require 'path'
+
+{
+  existsSync
+  readFileSync
+} = require 'fs'
 
 ###*
 * @constant Process property name for environment type
@@ -21,9 +29,24 @@ ENV_TYPE_PROD = "prod"
 
 MatchNonWord = /\W/g
 
+EnvFiles = [
+  '.env'
+  'env'
+  'env.json'
+  '.config'
+  'config'
+  'config.json'
+]
+
 class Environment
 
   constructor: (@config) ->
+    return if @config
+
+    for f in EnvFiles
+      if existsSync f
+        @config = JSON.parse readFileSync join process.cwd(), f
+        break
 
   transformKey: (key) -> key.replace MatchNonWord, '_'
 
